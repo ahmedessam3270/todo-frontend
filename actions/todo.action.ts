@@ -1,15 +1,24 @@
 "use server";
 
-export const getTodoListAction = async () => {};
+import { TodoFormValues } from "@/validation";
+import { revalidatePath } from "next/cache";
+
+export const getTodoListAction = async () => {
+  const res = await fetch("http://localhost:8000/todo");
+  const data = await res.json();
+  revalidatePath("/");
+  console.log(data);
+};
 export const createTodoAction = async ({
   title,
-  body,
-}: {
-  title: string;
-  body?: string | undefined;
-}) => {
+  description,
+  complete,
+}: TodoFormValues) => {
   // to execute the controller function
-  console.log(title, body);
+  console.log(title, description, complete);
 };
 export const updateTodoAction = async () => {};
-export const deleteTodoAction = async () => {};
+export const deleteTodoAction = async (id: string) => {
+  console.log(id);
+  revalidatePath("/");
+};

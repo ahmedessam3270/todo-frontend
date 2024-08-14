@@ -27,15 +27,19 @@ import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
 import { todoFormSchema, TodoFormValues } from "@/validation";
 import { createTodoAction } from "@/actions/todo.action";
+import { Checkbox } from "./ui/checkbox";
 const AddTodoForm = () => {
   const defaultValues: Partial<TodoFormValues> = {
     title: "",
-    body: "",
+    description: "",
+    category: "",
+    complete: false,
   };
 
   const onSubmit = async (data: TodoFormValues) => {
     // to wire the things up
     await createTodoAction(data);
+    console.log(data);
   };
 
   const form = useForm<TodoFormValues>({
@@ -74,10 +78,26 @@ const AddTodoForm = () => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter you Todo category..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <FormField
                 control={form.control}
-                name="body"
+                name="description"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Short description</FormLabel>
@@ -92,6 +112,24 @@ const AddTodoForm = () => {
                       You can <span>@mention</span> other users and
                       organizations to link to them.
                     </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="complete"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormLabel>Completed</FormLabel>
                     <FormMessage />
                   </FormItem>
                 )}
