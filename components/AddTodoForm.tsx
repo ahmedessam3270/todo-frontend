@@ -27,8 +27,10 @@ import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
 import { todoFormSchema, TodoFormValues } from "@/validation";
 import { createTodoAction } from "@/actions/todo.action";
-import { Checkbox } from "./ui/checkbox";
+import { useState } from "react";
 const AddTodoForm = () => {
+  const [isLoading, setIsloading] = useState(false);
+  const [open, setOpen] = useState(false);
   const defaultValues: Partial<TodoFormValues> = {
     title: "",
     description: "",
@@ -36,10 +38,12 @@ const AddTodoForm = () => {
     complete: false,
   };
 
-  const onSubmit = async (data: TodoFormValues) => {
+  const onSubmit = async ({ title, description, category }: TodoFormValues) => {
     // to wire the things up
-    await createTodoAction(data);
-    console.log(data);
+    console.log(title, description, category);
+    await createTodoAction({ title, description, category });
+    setOpen(false);
+    console.log(title, description, category);
   };
 
   const form = useForm<TodoFormValues>({
@@ -48,8 +52,8 @@ const AddTodoForm = () => {
     mode: "onChange",
   });
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild className="ml-auto">
         <Button>
           <Plus size={14} className="mr-1" />
           New todo
@@ -57,14 +61,11 @@ const AddTodoForm = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you&apos;re done.
-          </DialogDescription>
+          <DialogTitle>Add a new Todo</DialogTitle>
         </DialogHeader>
         <div className="py-4">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="title"
@@ -72,7 +73,10 @@ const AddTodoForm = () => {
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter you Todo title..." {...field} />
+                      <Input
+                        placeholder="Enter your Todo title..."
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -86,7 +90,7 @@ const AddTodoForm = () => {
                     <FormLabel>Category</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter you Todo category..."
+                        placeholder="Enter your Todo category..."
                         {...field}
                       />
                     </FormControl>
@@ -108,33 +112,11 @@ const AddTodoForm = () => {
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>
-                      You can <span>@mention</span> other users and
-                      organizations to link to them.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="complete"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormLabel>Completed</FormLabel>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Save changes</Button>
+              <Button type="submit">Add</Button>
             </form>
           </Form>
         </div>

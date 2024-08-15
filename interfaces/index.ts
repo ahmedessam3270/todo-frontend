@@ -4,7 +4,7 @@ export interface ITodo {
   category: string;
   description: string | null;
   complete: boolean;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export interface IUser {

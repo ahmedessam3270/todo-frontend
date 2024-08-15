@@ -12,12 +12,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { userFormValues, userSchema } from "@/validation";
 import Link from "next/link";
 import { loginAction } from "@/actions/auth.action";
 import { IUser } from "@/interfaces";
 const LoginForm = () => {
+  const router = useRouter();
   const defaultValues: Partial<userFormValues> = {
     email: "",
     password: "",
@@ -26,6 +28,7 @@ const LoginForm = () => {
   const onSubmit = async (data: IUser) => {
     // to wire the things up
     await loginAction(data);
+    router.push("/");
   };
 
   const form = useForm<userFormValues>({
@@ -56,7 +59,11 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="Enter you password..." {...field} />
+                <Input
+                  type="password"
+                  placeholder="Enter you password..."
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
               <div className="mt-1">

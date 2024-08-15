@@ -1,15 +1,22 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Pen, Trash } from "lucide-react";
-import { deleteTodoAction } from "@/actions/todo.action";
+import { deleteTodoAction, markTodoAsComplete } from "@/actions/todo.action";
 import SpinnerMini from "./SpinnerMini";
 
 const TodoActionsBtns = ({ id }: { id: string }) => {
   const [isLoading, setIsloading] = useState(false);
   return (
     <>
-      <Button size="icon">
+      <Button
+        size="icon"
+        onClick={async () => {
+          setIsloading(true);
+          await markTodoAsComplete(id);
+          setIsloading(false);
+        }}
+      >
         <Pen size={16} />
       </Button>
       <Button

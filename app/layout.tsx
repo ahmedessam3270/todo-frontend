@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/them-provider";
 import { ModeToggle } from "@/components/ModeToggle";
+import { Button } from "@/components/ui/button";
+import { DoorClosed } from "lucide-react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +27,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ModeToggle />
+          <div className=" m-2">
+            <ModeToggle />
+          </div>
           {children}
         </ThemeProvider>
       </body>

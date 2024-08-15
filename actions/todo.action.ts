@@ -1,24 +1,21 @@
-"use server";
-
 import { TodoFormValues } from "@/validation";
 import { revalidatePath } from "next/cache";
-
+import axiosInstance from "./../app/lib/axios";
 export const getTodoListAction = async () => {
-  const res = await fetch("http://localhost:8000/todo");
-  const data = await res.json();
-  revalidatePath("/");
-  console.log(data);
+  const data = await axiosInstance.get("/todo");
+  return data;
 };
 export const createTodoAction = async ({
   title,
   description,
-  complete,
+  category,
 }: TodoFormValues) => {
   // to execute the controller function
-  console.log(title, description, complete);
+  await axiosInstance.post("/todo", { title, description, category });
 };
-export const updateTodoAction = async () => {};
+export const markTodoAsComplete = async (id: string) => {
+  await axiosInstance.patch(`/todo/${id}`, { complete: true });
+};
 export const deleteTodoAction = async (id: string) => {
-  console.log(id);
-  revalidatePath("/");
+  await axiosInstance.delete(`/todo/${id}`);
 };
