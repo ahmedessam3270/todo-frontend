@@ -1,34 +1,36 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "./ui/button";
-import { Pen, Trash } from "lucide-react";
+import { CopyX, Pen, SquareCheckBig, Trash } from "lucide-react";
 import { deleteTodoAction, markTodoAsComplete } from "@/actions/todo.action";
 import SpinnerMini from "./SpinnerMini";
 
 const TodoActionsBtns = ({ id }: { id: string }) => {
-  const [isLoading, setIsloading] = useState(false);
+  const [isLoadingDeleting, setIsloadingDeleting] = useState(false);
+  const [isLoadingCompleting, setIsloadingCompleting] = useState(false);
+
   return (
     <>
       <Button
         size="icon"
         onClick={async () => {
-          setIsloading(true);
+          setIsloadingCompleting(true);
           await markTodoAsComplete(id);
-          setIsloading(false);
+          setIsloadingCompleting(false);
         }}
       >
-        <Pen size={16} />
+        {isLoadingCompleting ? <SpinnerMini /> : <SquareCheckBig size={16} />}
       </Button>
       <Button
         size="icon"
         variant="destructive"
         onClick={async () => {
-          setIsloading(true);
+          setIsloadingDeleting(true);
           await deleteTodoAction(id);
-          setIsloading(false);
+          setIsloadingDeleting(false);
         }}
       >
-        {isLoading ? <SpinnerMini /> : <Trash size={16} />}
+        {isLoadingDeleting ? <SpinnerMini /> : <Trash size={16} />}
       </Button>
     </>
   );

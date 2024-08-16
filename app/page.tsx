@@ -5,7 +5,7 @@ import TodoTable from "@/components/TodoTable";
 export default function Home() {
   return (
     <>
-      <div className="flex justify-end mr-3">
+      <div className="absolute right-2 top-2">
         <Logout />
       </div>
       <main className="container">

@@ -1,5 +1,4 @@
 import { TodoFormValues } from "@/validation";
-import { revalidatePath } from "next/cache";
 import axiosInstance from "./../app/lib/axios";
 export const getTodoListAction = async () => {
   const data = await axiosInstance.get("/todo");
