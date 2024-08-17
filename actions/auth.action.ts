@@ -1,5 +1,4 @@
 import { IUser } from "@/interfaces";
-import { cookies } from "next/headers";
 
 export const loginAction = async (inputData: IUser) => {
   try {
@@ -53,28 +52,6 @@ export const registerAction = async ({ email, password }: IUser) => {
     return data;
   } catch (error) {
     console.error("Registration Error:", error);
-    throw error;
-  }
-};
-
-export const logoutAction = async () => {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACK_SERVER}/auth/logout`,
-      {
-        method: "POST",
-        credentials: "include", // Include cookies in the request
-      }
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to logout.");
-    }
-
-    // Handle successful logout, e.g., updating user context or state
-  } catch (error) {
-    console.error("Logout Error:", error);
     throw error;
   }
 };

@@ -26,8 +26,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
 import { todoFormSchema, TodoFormValues } from "@/validation";
-import { createTodoAction } from "@/actions/todo.action";
+import { createTodoAction, getTodoListAction } from "@/actions/todo.action";
 import { useState } from "react";
+import { createTodoAction2 } from "@/actions/createTodo.action";
 const AddTodoForm = () => {
   const [isLoading, setIsloading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -41,7 +42,7 @@ const AddTodoForm = () => {
   const onSubmit = async ({ title, description, category }: TodoFormValues) => {
     // to wire the things up
     console.log(title, description, category);
-    await createTodoAction({ title, description, category });
+    await createTodoAction2({ title, description, category });
     setOpen(false);
     console.log(title, description, category);
   };

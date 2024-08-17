@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { userFormValues, userSchema } from "@/validation";
 import Link from "next/link";
 import { registerAction } from "@/actions/auth.action";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 const RegisterationForm = () => {
   const router = useRouter();
   const defaultValues: Partial<userFormValues> = {
@@ -28,8 +28,8 @@ const RegisterationForm = () => {
     console.log(data);
     // to wire the things up
     await registerAction(data);
-    
-    router.push('/login');
+
+    router.push("/login");
   };
 
   const form = useForm<userFormValues>({

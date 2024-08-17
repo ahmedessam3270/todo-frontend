@@ -1,37 +1,34 @@
-"use client";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { CopyX, Pen, SquareCheckBig, Trash } from "lucide-react";
 import { deleteTodoAction, markTodoAsComplete } from "@/actions/todo.action";
 import SpinnerMini from "./SpinnerMini";
+import { revalidatePath } from "next/cache";
 
-const TodoActionsBtns = ({ id }: { id: string }) => {
-  const [isLoadingDeleting, setIsloadingDeleting] = useState(false);
-  const [isLoadingCompleting, setIsloadingCompleting] = useState(false);
+const TodoActionsBtns = async ({ id }: { id: string }) => {
+  const todoCompleted = async () => {
+    "use server";
+    await markTodoAsComplete(id);
+    revalidatePath("/");
+  };
 
+  const deleteTodo = async () => {
+    "use server";
+    await deleteTodoAction(id);
+    revalidatePath("/");
+  };
   return (
     <>
-      <Button
-        size="icon"
-        onClick={async () => {
-          setIsloadingCompleting(true);
-          await markTodoAsComplete(id);
-          setIsloadingCompleting(false);
-        }}
-      >
-        {isLoadingCompleting ? <SpinnerMini /> : <SquareCheckBig size={16} />}
-      </Button>
-      <Button
-        size="icon"
-        variant="destructive"
-        onClick={async () => {
-          setIsloadingDeleting(true);
-          await deleteTodoAction(id);
-          setIsloadingDeleting(false);
-        }}
-      >
-        {isLoadingDeleting ? <SpinnerMini /> : <Trash size={16} />}
-      </Button>
+      <form action={todoCompleted}>
+        <Button size="icon">
+          <SquareCheckBig size={16} />
+        </Button>
+      </form>
+      <form action={deleteTodo}>
+        <Button size="icon" variant="destructive">
+          <Trash size={16} />
+        </Button>
+      </form>
     </>
   );
 };
